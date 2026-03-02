@@ -1,14 +1,14 @@
 #include<stdio.h>
-// simple stack operaiton initiation
-#define STACK_MAX_SIZE 20 // global variable to store the maximum size of the stack
+#include<stdlib.h>
 struct stack_operations
 {
     int top; // variable to keep track of the top index of the stack
-    int stacked_data[STACK_MAX_SIZE]; // array to store the items in the stack
+    int stack_max_size; // variable to define the maximum size of the stack
+    int *stacked_data;// switch to pointer instead of static array to allow dynamic memory allocation for the stack data
 };
 void stack_push(struct stack_operations *s) // function to push an item onto the stack
 {
-    if(s->top == STACK_MAX_SIZE -1) // check if the stack is full
+    if(s->top == s-> stack_max_size -1) // check if the stack is full
     {
         printf("Stack overflow! Cannot push more items onto the stack.\n");
         return;
@@ -48,7 +48,7 @@ void show_stacked_data(struct stack_operations *s) // function to display the it
         printf("Stacked data: ");
         for(int i=s->top; i>=0; i--) //loop from top to the end of the stack
         {
-            printf("%d", s->stacked_data[i]); // print each item in the stacked data
+            printf("%d ", s->stacked_data[i]); // print each item in the stacked data
         }
         printf("\n"); // print a new line after displaying the stacked data
         printf("Top of stack: %d\n", s->stacked_data[s->top]); // print the top item of the stack
@@ -58,7 +58,15 @@ void show_stacked_data(struct stack_operations *s) // function to display the it
 int main (void)
 {
     struct stack_operations s; // create an instance of the stack_operations structure
+    printf("Enter maximum stack size: ");
+    scanf("%d", &s.stack_max_size);
     s.top = -1; // initialize the top index to -1, initializing an empty stack for the start of the operation
+    s.stacked_data = calloc(s.stack_max_size,sizeof(int)); // allocate memory for the stack data based on the defined maximum size
+    if(s.stacked_data == NULL) // check if memory allocation was successful
+    {
+        printf("Memory allocation failed! Unable to create stack.\n");
+        return 1; // exit the program with an error code
+    }
     int choice; // variable to store the user's choice for stack operations
     while (1) // infinite loop to continuously prompt the user for stack operations until they choose to exit
     {
@@ -76,7 +84,8 @@ int main (void)
                 show_stacked_data(&s); // call the show_stacked_data function to display the items in the stack
                 break;
             case 4:
-                printf("Exiting the program. Goodbye!\n");
+                printf("Exiting the program!\n");
+                free(s.stacked_data); // free the allocated memory for the stack data
                 return 0; // exit the program
             default:
                 printf("Invalid choice! Please choose a valid operation.\n");
