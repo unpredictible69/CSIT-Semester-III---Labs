@@ -1,14 +1,14 @@
 #include<stdio.h>
 // simple stack operaiton initiation
-#define stack_max_size 20 // global variable to store the maximum size of the stack
+#define STACK_MAX_SIZE 20 // global variable to store the maximum size of the stack
 struct stack_operations
 {
     int top; // variable to keep track of the top index of the stack
-    int stacked_data[stack_max_size]; // array to store the items in the stack
+    int stacked_data[STACK_MAX_SIZE]; // array to store the items in the stack
 };
 void stack_push(struct stack_operations *s) // function to push an item onto the stack
 {
-    if(s->top == stack_max_size -1) // check if the stack is full
+    if(s->top == STACK_MAX_SIZE -1) // check if the stack is full
     {
         printf("Stack overflow! Cannot push more items onto the stack.\n");
         return;
