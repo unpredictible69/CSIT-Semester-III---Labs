@@ -1,18 +1,24 @@
 #include<stdio.h>
 #include<stdlib.h>
+
+
 struct stack_operations
 {
     int top; // variable to keep track of the top index of the stack
     int stack_max_size; // variable to define the maximum size of the stack
     int *stacked_data;// switch to pointer instead of static array to allow dynamic memory allocation for the stack data
 };
+
+
 void stack_push(struct stack_operations *s) // function to push an item onto the stack
 {
+    
     if(s->top == s-> stack_max_size -1) // check if the stack is full
     {
         printf("Stack overflow! Cannot push more items onto the stack.\n");
         return;
     }
+    
     else 
     {
         int data; // variable to store the data to be pushed onto the stack
@@ -21,14 +27,19 @@ void stack_push(struct stack_operations *s) // function to push an item onto the
         s->top = s->top +1; // increment the top index
         s->stacked_data[s->top] = data; // add the data to the stack
     }
+
 }
+
+
 void stack_pop(struct stack_operations *s) // function to pop an item from the stack
 {
+
     if(s->top == -1) // check if the stack is empty
     {
         printf("Stack underflow! Cannot pop items from an empty stack.\n");
         return;
     }
+    
     else 
     {
         int popped_data = s->stacked_data[s->top]; //grep data to be popped from the top of the stacked data
@@ -36,6 +47,8 @@ void stack_pop(struct stack_operations *s) // function to pop an item from the s
         printf("Popped data: %d\n", popped_data); // print the popped data
     }
 }
+
+
 void show_stacked_data(struct stack_operations *s) // function to display the items in the stack
 {
     if(s->top == -1) // check if the stack is empty
@@ -43,6 +56,7 @@ void show_stacked_data(struct stack_operations *s) // function to display the it
         printf("Stack is empty! No items to display.\n");
         return;
     }
+    
     else 
     {
         printf("Stacked data: ");
@@ -55,18 +69,27 @@ void show_stacked_data(struct stack_operations *s) // function to display the it
         printf("Stack size: %d\n", s->top +1); // print the current size of the stack
     }
 }
+
+
 int main (void)
 {
     struct stack_operations s; // create an instance of the stack_operations structure
+    
     printf("Enter maximum stack size: ");
-    scanf("%d", &s.stack_max_size);
-    s.top = -1; // initialize the top index to -1, initializing an empty stack for the start of the operation
+    valid_input: // label for input validation loop
+    while (scanf("%d", &s.stack_max_size) != 1 || s.stack_max_size <= 0)
+    {
+        printf("Invalid input! Please enter a positive integer: ");
+        while(getchar() != '\n');
+    }
     s.stacked_data = calloc(s.stack_max_size,sizeof(int)); // allocate memory for the stack data based on the defined maximum size
     if(s.stacked_data == NULL) // check if memory allocation was successful
     {
         printf("Memory allocation failed! Unable to create stack.\n");
         return 1; // exit the program with an error code
     }
+    s.top = -1; // initialize the top index to -1, initializing an empty stack for the start of the operation
+    
     int choice; // variable to store the user's choice for stack operations
     while (1) // infinite loop to continuously prompt the user for stack operations until they choose to exit
     {
