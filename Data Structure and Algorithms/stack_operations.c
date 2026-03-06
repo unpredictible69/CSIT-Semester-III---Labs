@@ -42,7 +42,7 @@ void stack_pop(struct stack_operations *s) // function to pop an item from the s
     
     else 
     {
-        int popped_data = s->stacked_data[s->top]; //grep data to be popped from the top of the stacked data
+        int popped_data = s->stacked_data[s->top]; //get data to be popped from the top of the stacked data
         s->top = s->top -1; // decrement the top index
         printf("Popped data: %d\n", popped_data); // print the popped data
     }
@@ -76,7 +76,7 @@ int main (void)
     struct stack_operations s; // create an instance of the stack_operations structure
     
     printf("Enter maximum stack size: ");
-    valid_input: // label for input validation loop
+    validate_stack_size: // label for memory validation loop
     while (scanf("%d", &s.stack_max_size) != 1 || s.stack_max_size <= 0)
     {
         printf("Invalid input! Please enter a positive integer: ");
@@ -86,7 +86,7 @@ int main (void)
     if(s.stacked_data == NULL) // check if memory allocation was successful
     {
         printf("Memory allocation failed! Unable to create stack.\n");
-        return 1; // exit the program with an error code
+        goto validate_stack_size; // do not exit the program but reallocate the memory
     }
     s.top = -1; // initialize the top index to -1, initializing an empty stack for the start of the operation
     
